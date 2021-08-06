@@ -1,7 +1,7 @@
 package com.ty.basketnotificationmicroservicenew.service;
 
 import com.ty.basketnotificationmicroservicenew.dto.BasketCompleteOrderEvent;
-import com.ty.basketnotificationmicroservicenew.dto.BasketEvent;
+import com.ty.basketnotificationmicroservicenew.dto.BasketItemEvent;
 import com.ty.basketnotificationmicroservicenew.exceptions.ProductNotFoundException;
 import com.ty.basketnotificationmicroservicenew.model.Product;
 import com.ty.basketnotificationmicroservicenew.repository.ProductRepository;
@@ -18,7 +18,7 @@ public class ProductServiceV1 implements ProductService {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private static final String NOTIFICATION_TOPIC = "product.notification";
 
-    public void updateProductShoppersSet(BasketEvent readValue) {
+    public void updateProductShoppersSet(BasketItemEvent readValue) {
         Optional<Product> optionalProduct = productRepository.findById(readValue.getProductId());
         if(optionalProduct.isEmpty()){
             throw new ProductNotFoundException();
@@ -28,7 +28,7 @@ public class ProductServiceV1 implements ProductService {
         productRepository.save(product);
     }
 
-    public void saveToProductShoppersSet(BasketEvent readValue) {
+    public void saveToProductShoppersSet(BasketItemEvent readValue) {
         Optional<Product> optionalProduct = productRepository.findById(readValue.getProductId());
         if(optionalProduct.isEmpty()){
             throw new ProductNotFoundException();

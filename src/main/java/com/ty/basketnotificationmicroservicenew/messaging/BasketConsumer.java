@@ -3,8 +3,7 @@ package com.ty.basketnotificationmicroservicenew.messaging;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ty.basketnotificationmicroservicenew.dto.BasketCompleteOrderEvent;
-import com.ty.basketnotificationmicroservicenew.dto.BasketEvent;
-import com.ty.basketnotificationmicroservicenew.model.Product;
+import com.ty.basketnotificationmicroservicenew.dto.BasketItemEvent;
 import com.ty.basketnotificationmicroservicenew.service.ProductServiceV1;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -18,12 +17,12 @@ public class BasketConsumer implements Consumer {
     @KafkaListener(groupId = "notification-consumer-group", topics = "basket.update")
     public void basketUpdateCallback(String message) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        service.updateProductShoppersSet(mapper.readValue(message, BasketEvent.class));
+        service.updateProductShoppersSet(mapper.readValue(message, BasketItemEvent.class));
     }
     @KafkaListener(groupId = "notification-consumer-group", topics = "basket.create")
     public void basketCreateCallback(String message) throws JsonProcessingException{
         ObjectMapper mapper = new ObjectMapper();
-        service.saveToProductShoppersSet(mapper.readValue(message, BasketEvent.class));
+        service.saveToProductShoppersSet(mapper.readValue(message, BasketItemEvent.class));
     }
     @KafkaListener(groupId = "notification-consumer-group", topics = "basket.order")
     public void basketOrderCallback(String message) throws JsonProcessingException{
