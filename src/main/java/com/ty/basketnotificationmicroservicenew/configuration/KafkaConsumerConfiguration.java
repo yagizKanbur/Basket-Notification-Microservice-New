@@ -23,7 +23,6 @@ public class KafkaConsumerConfiguration {
     private static final String GROUP_ID = "notification-consumer-group";
 
     @Bean
-    @Autowired
     public ConsumerFactory<String, BasketItemEvent> consumerFactory() {
         JsonDeserializer<BasketItemEvent> deserializer = new JsonDeserializer<>(BasketItemEvent.class);
         deserializer.setRemoveTypeHeaders(false);
@@ -43,7 +42,6 @@ public class KafkaConsumerConfiguration {
     }
 
     @Bean
-    @Autowired
     public ConcurrentKafkaListenerContainerFactory<String, BasketItemEvent> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, BasketItemEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());

@@ -14,9 +14,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UsersHaveProductServiceV1 implements UsersHaveProductService {
-    private static UsersHaveProductRepository usersHaveProductRepository;
-    private final KafkaTemplate<String, UsersHaveProduct> kafkaTemplate;
     private static final String NOTIFICATION_TOPIC = "product.notification";
+
+    private final UsersHaveProductRepository usersHaveProductRepository;
+    private final KafkaTemplate<String, UsersHaveProduct> kafkaTemplate;
 
     public void updateProductShoppersSet(BasketItemEvent readValue) {
         Optional<UsersHaveProduct> optionalProduct = usersHaveProductRepository.findById(readValue.getProductId());
@@ -29,16 +30,16 @@ public class UsersHaveProductServiceV1 implements UsersHaveProductService {
     }
 
     public void saveToProductShoppersSet(BasketItemEvent readValue) {
+        // Todo: codes bellow implemented just for demonstration purposes, since there is no real product service it fakes product entry
+        UsersHaveProduct product = new UsersHaveProduct();
+        product.setProductId(readValue.getProductId());
+        product.setProductPrice(10.00);
+        product.setStockQuantity(1000);
+        product.setProductName("Demonstration");
+        addProduct(product);
         Optional<UsersHaveProduct> optionalProduct = usersHaveProductRepository.findById(readValue.getProductId());
         if(optionalProduct.isEmpty()){
-            //throw new ProductNotFoundException();
-            // Todo: codes bellow implemented just for demonstration purposes, since there is no real product service it fakes product entry
-            UsersHaveProduct product = new UsersHaveProduct();
-            product.setProductId(readValue.getProductId());
-            product.setProductPrice(10.00);
-            product.setStockQuantity(1000);
-            product.setProductName("Demonstration");
-            addProduct(product);
+            throw new ProductNotFoundException();
 
         }
         Optional<UsersHaveProduct> fakeProduct = usersHaveProductRepository.findById(readValue.getProductId());
