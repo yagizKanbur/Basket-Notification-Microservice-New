@@ -31,10 +31,18 @@ public class UsersHaveProductServiceV1 implements UsersHaveProductService {
     public void saveToProductShoppersSet(BasketItemEvent readValue) {
         Optional<UsersHaveProduct> optionalProduct = usersHaveProductRepository.findById(readValue.getProductId());
         if(optionalProduct.isEmpty()){
-            throw new ProductNotFoundException();
-        }
+            //throw new ProductNotFoundException();
+            // Todo: codes bellow implemented just for demonstration purposes, since there is no real product service it fakes product entry
+            UsersHaveProduct product = new UsersHaveProduct();
+            product.setProductId(readValue.getProductId());
+            product.setProductPrice(10.00);
+            product.setStockQuantity(1000);
+            product.setProductName("Demonstration");
+            addProduct(product);
 
-        UsersHaveProduct usersHaveProduct = optionalProduct.get();
+        }
+        Optional<UsersHaveProduct> fakeProduct = usersHaveProductRepository.findById(readValue.getProductId());
+        UsersHaveProduct usersHaveProduct = fakeProduct.get();
         usersHaveProduct.addUserToSet(readValue.getUserId());
         usersHaveProductRepository.save(usersHaveProduct);
 

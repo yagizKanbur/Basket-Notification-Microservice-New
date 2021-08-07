@@ -15,4 +15,8 @@ public class BasketItemEvent {
         this.userId = userId;
         this.productId = productId;
     }
+
+    public BasketItemEvent(){
+
+    }
 }
