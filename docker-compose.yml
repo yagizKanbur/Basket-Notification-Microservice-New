@@ -25,7 +25,7 @@ services:
       - zookeeper
 
   # run the setup.sh script
-  notification:
+  couchbase:
     image: couchbase:latest
     restart: always
     ports:

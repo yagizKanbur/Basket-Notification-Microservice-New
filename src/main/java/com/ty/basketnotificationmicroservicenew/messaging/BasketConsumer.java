@@ -1,33 +1,33 @@
 package com.ty.basketnotificationmicroservicenew.messaging;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ty.basketnotificationmicroservicenew.dto.BasketCompleteOrderEvent;
+import com.couchbase.client.core.deps.com.fasterxml.jackson.databind.ObjectMapper;
 import com.ty.basketnotificationmicroservicenew.dto.BasketItemEvent;
-import com.ty.basketnotificationmicroservicenew.service.ProductServiceV1;
+import com.ty.basketnotificationmicroservicenew.service.UsersHaveProductServiceV1;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
 @RequiredArgsConstructor
 public class BasketConsumer implements Consumer {
-    private final ProductServiceV1 service;
+    private final UsersHaveProductServiceV1 service;
 
     @KafkaListener(groupId = "notification-consumer-group", topics = "basket.update")
-    public void basketUpdateCallback(String message) throws JsonProcessingException {
+    public void basketUpdateCallback(BasketItemEvent message) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        service.updateProductShoppersSet(mapper.readValue(message, BasketItemEvent.class));
+        service.updateProductShoppersSet(message);
     }
     @KafkaListener(groupId = "notification-consumer-group", topics = "basket.create")
-    public void basketCreateCallback(String message) throws JsonProcessingException{
-        ObjectMapper mapper = new ObjectMapper();
-        service.saveToProductShoppersSet(mapper.readValue(message, BasketItemEvent.class));
+    public void basketCreateCallback(BasketItemEvent message) throws IOException {
+        //ObjectMapper mapper = new ObjectMapper();
+        service.saveToProductShoppersSet(message);
     }
-    @KafkaListener(groupId = "notification-consumer-group", topics = "basket.order")
-    public void basketOrderCallback(String message) throws JsonProcessingException{
-        ObjectMapper mapper = new ObjectMapper();
-        service.removeFromProductsShoppersSets(mapper.readValue(message, BasketCompleteOrderEvent.class));
-    }
+    /*@KafkaListener(groupId = "notification-consumer-group", topics = "basket.order")
+    public void basketOrderCallback(ItemEvent message) throws IOException {
+        //ObjectMapper mapper = new ObjectMapper();
+        service.removeFromProductsShoppersSets(mapper.readValue((DataInput) message, BasketCompleteOrderEvent.class));
+    }*/
 }
 

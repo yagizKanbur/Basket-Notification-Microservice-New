@@ -1,4 +1,4 @@
 package com.ty.basketnotificationmicroservicenew.service;
 
-public interface ProductService {
+public interface UsersHaveProductService {
 }

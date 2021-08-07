@@ -13,4 +13,9 @@ import java.util.List;
 public class BasketCompleteOrderEvent {
     private Long userId;
     private List<Long> productIds = new ArrayList<>();
+
+    public BasketCompleteOrderEvent(Long userId, List<Long> productIds) {
+        this.userId = userId;
+        this.productIds = productIds;
+    }
 }

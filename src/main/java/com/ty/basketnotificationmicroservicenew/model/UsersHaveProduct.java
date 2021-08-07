@@ -12,7 +12,7 @@ import java.util.Set;
 @Document
 @Getter
 @Setter
-public class Product {
+public class UsersHaveProduct {
 
     @Id
     private Long productId;
@@ -25,7 +25,7 @@ public class Product {
     @Field
     private Set<Long> userIds;
 
-    public Product(){
+    public UsersHaveProduct(){
         userIds = new HashSet<>();
     }
 
